@@ -24,7 +24,7 @@ public class Matrix {
                     FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
                     if (inverse.equals(lines.get(i - 1).firstNonZeroNumber())) {
                         if (!inverse.isZero()) {
-                            lines.set(j - 1, lines.get(i - 1).multiply(inverse).add(lines.get(j - 1)));
+                            lines.set(j - 1, lines.get(i - 1).add(lines.get(j - 1)));
                             log(String.format("Adding line %d onto line %d", i, j));
                         }
                     }
