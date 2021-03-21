@@ -32,7 +32,7 @@ public class MatrixLine implements Comparable<MatrixLine> {
     public void pivotize() {
         for (int i = 1; i <= this.numberList.size(); i++) {
             if (!get(i).isZero()) {
-                FieldNumber inverse = get(i).getInverse();
+                FieldNumber inverse = get(i).getMultiplicalInverse();
                 numberList = numberList.stream().map(n -> n.multiply(inverse)).collect(Collectors.toList());
                 return;
             }

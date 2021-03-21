@@ -38,7 +38,7 @@ public class Matrix {
             MatrixLine line = lines.get(j);
             MatrixLine previousLine = lines.get(j - 1);
             int i = line.firstNonZeroIndex();
-            lines.set(j - 1, line.multiply(previousLine.get(i).getInverse()).add(previousLine));
+            lines.set(j - 1, line.multiply(previousLine.get(i).getAdditionInverse()).add(previousLine));
             break;
         }
 

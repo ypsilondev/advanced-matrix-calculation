@@ -30,9 +30,18 @@ public class FieldNumber implements Comparable<FieldNumber>{
         }
     }
 
-    public FieldNumber getInverse(){
+    public FieldNumber getAdditionInverse(){
         for(int i = 1; i < this.mod; i++){
             if((this.value + i) % this.mod == 0){
+                return new FieldNumber(i, mod);
+            }
+        }
+        return null;
+    }
+
+    public FieldNumber getMultiplicalInverse(){
+        for(int i = 1; i < this.mod; i++){
+            if((this.value * i) % this.mod == 1){
                 return new FieldNumber(i, mod);
             }
         }
