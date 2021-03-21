@@ -86,6 +86,7 @@ public class Matrix {
                 }
             }
         }
+        getSolutions();
         return "";
     }
 
