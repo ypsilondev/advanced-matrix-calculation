@@ -17,14 +17,13 @@ public class Main {
 
         try {
             MOD = Integer.parseInt(chosenField);
-            Solver activeSolver = new Solver(MOD);
-            interact(activeSolver);
+            interact();
         } catch(NumberFormatException e) {
             Terminal.printError(Message.INVALID_FIELD);
         }
     }
 
-    private static void interact(Solver solver) {
+    private static void interact() {
         Terminal.printLine(Message.INPUT_MATRIX);
 
 
