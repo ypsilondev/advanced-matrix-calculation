@@ -48,16 +48,26 @@ public class Matrix {
     }
 
     public String solve2() {
-        for (int i = 0; i < this.lines.size(); i++) {
+        for (int i = 1; i <= this.lines.size(); i++) {
             this.sort();
-            lines.get(i).pivotize();
-            for (int j = 0; j < this.lines.size(); j++) {
+            lines.get(i - 1).pivotize();
+            log(String.format("Pivotizing line %d", i));
+            for (int j = 1; j <= this.lines.size(); j++) {
                 if (j != i) {
-                    lines.set(j, lines.get(i).multiply(lines.get(j).get(i + 1).getAdditionInverse()).add(lines.get(j)));
+                    FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
+                    if(!inverse.isZero()){
+                        lines.set(j - 1, lines.get(i - 1).multiply(inverse).add(lines.get(j - 1)));
+                        log(String.format("Adding line %d times %s onto line %d", i, inverse.toString(), j));
+                    }
                 }
             }
         }
-        return toString();
+        return "";
+    }
+
+    private void log(String s) {
+        Terminal.printLine(s);
+        Terminal.printLine(toString());
     }
 
     public void sort() {
