@@ -2,10 +2,10 @@ package tech.ypsilon.matrix;
 
 import java.util.Objects;
 
-public class FieldNumber implements Comparable<FieldNumber>{
-    
+public class FieldNumber implements Comparable<FieldNumber> {
+
     private int value;
-    private final int mod; 
+    private final int mod;
 
     public FieldNumber(int value){
         this(value, Main.MOD);
@@ -21,16 +21,16 @@ public class FieldNumber implements Comparable<FieldNumber>{
     
     public FieldNumber add(FieldNumber nbr){
         if (this.mod == nbr.mod) {
-            return new FieldNumber(this.value + nbr.value, mod);
+            return new FieldNumber(this.value + nbr.value, this.mod);
         } else {
             throw new IllegalArgumentException("Modulo not the same");
         }
     }
 
-    public FieldNumber multiply(FieldNumber nbr){
-        if(this.mod == nbr.mod){
-            return new FieldNumber(this.value * nbr.value, mod);
-        }else{
+    public FieldNumber multiply(FieldNumber nbr) {
+        if (this.mod == nbr.mod) {
+            return new FieldNumber(this.value * nbr.value, this.mod);
+        } else {
             throw new IllegalArgumentException("Modulo not the same");
         }
     }
@@ -83,7 +83,7 @@ public class FieldNumber implements Comparable<FieldNumber>{
         return Objects.hash(value, mod);
     }
 
-    public FieldNumber multiply(int i){
+    public FieldNumber multiply(int i) {
         return new FieldNumber(this.value * i, this.mod);
     }
 

@@ -2,7 +2,6 @@ package tech.ypsilon.matrix;
 
 import util.Terminal;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -11,9 +10,43 @@ import java.util.Set;
 import java.util.TreeSet;
 
 public class Matrix {
-    private final List<MatrixLine> lines = new ArrayList<>();
+    private final List<MatrixLine> lines;
+
+    public Matrix(List<MatrixLine> newLines) {
+        this.lines = newLines;
+        this.lines.forEach(line -> line.setMatrix(this));
+    }
+
+    public Matrix() {
+        this.lines = new ArrayList<>();
+    }
+
+    public static Matrix zeroMatrix(int height, int width) {
+        List<MatrixLine> lines = new ArrayList<>();
+        FieldNumber[] lineContent = new FieldNumber[width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < lineContent.length; j++) {
+                lineContent[j] = new FieldNumber(0);
+            }
+            lines.add(new MatrixLine(lineContent));
+        }
+        return new Matrix(lines);
+    }
+
+    public static Matrix identityMatrix(int size) {
+        List<MatrixLine> lines = new ArrayList<>();
+        FieldNumber[] lineContent = new FieldNumber[size];
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                lineContent[j] = new FieldNumber(i == j ? 1 : 0);
+            }
+            lines.add(new MatrixLine(lineContent));
+        }
+        return new Matrix(lines);
+    }
 
     public void addLine(MatrixLine line) {
+        line.setMatrix(this);
         this.lines.add(line);
     }
 
@@ -56,6 +89,21 @@ public class Matrix {
         return "";
     }
 
+    public Matrix transposeMatrix() {
+        List<MatrixLine> newLines = new ArrayList<>();
+
+        for (int i = 0; i < lines.get(0).getSize(); i++) {
+            FieldNumber[] lineContent = new FieldNumber[lines.size()];
+            for (int j = 0; j < lines.size(); j++) {
+                lineContent[j] = lines.get(j).get(i + 1);
+            }
+            newLines.add(new MatrixLine(lineContent));
+        }
+
+        return new Matrix(newLines);
+    }
+
+
     public void getSolutions() {
         Collection<Integer> freeVariablePositions = freeVariablePostions();
 
@@ -75,20 +123,16 @@ public class Matrix {
             }
             Terminal.printLine(formatVector(String.format("Span vector [derived by x_%d]", i), vectorValues));
         }
-
-
-
-
     }
 
     private String formatVector(String name, List<FieldNumber> values) {
         String out = name + " = (";
-        out += String.join(", ", intListToStringArr(values));
+        out += String.join(", ", numberListToStringArr(values));
         out += ")^T";
         return out;
     }
 
-    private String[] intListToStringArr(List<FieldNumber> list) {
+    private String[] numberListToStringArr(List<FieldNumber> list) {
         String[] tmp = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             tmp[i] = list.get(i).toString();
@@ -143,4 +187,19 @@ public class Matrix {
         return builder.toString();
     }
 
+    public List<MatrixLine> getLines() {
+        return this.lines;
+    }
+
+    public FieldNumber getTrace() {
+        FieldNumber trace = new FieldNumber(0);
+        for (int i = 0; i < this.lines.size(); i++) {
+            trace.add(this.lines.get(i).get(i + 1));
+        }
+        return trace;
+    }
+
+    public long countLinearIndependentLines() {
+        return this.lines.stream().filter(line -> !line.isZeroLine()).count();
+    }
 }
