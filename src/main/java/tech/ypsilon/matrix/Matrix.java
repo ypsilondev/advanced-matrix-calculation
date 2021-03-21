@@ -23,7 +23,7 @@ public class Matrix {
                 if (j != i) {
                     FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
                     if (inverse.equals(lines.get(i - 1).firstNonZeroNumber())) {
-                        if (!inverse.isZero()) {
+                        if (!inverse.isZero() && !lines.get(i-1).get(i).isZero()) {
                             lines.set(j - 1, lines.get(i - 1).add(lines.get(j - 1)));
                             log(String.format("Adding line %d onto line %d", i, j));
                         }
@@ -31,16 +31,18 @@ public class Matrix {
                 }
             }
 
-            if (!lines.get(i - 1).firstNonZeroNumber().isOne()) {
-                lines.get(i - 1).pivotize();
-                log(String.format("Pivotizing line %d", i));
+
+            FieldNumber inv = lines.get(i - 1).pivotize();
+            if (!inv.isOne()) {
+                log(String.format("Pivotizing line %d (times %s)", i, inv.toString()));
             }
+
 
             // add the pivotized one.
             for (int j = 1; j <= this.lines.size(); j++) {
                 if (j != i) {
                     FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
-                    if (!inverse.isZero()) {
+                    if (!inverse.isZero() && !lines.get(i-1).get(i).isZero()) {
                         lines.set(j - 1, lines.get(i - 1).multiply(inverse).add(lines.get(j - 1)));
                         log(String.format("Adding line %d times %s onto line %d", i, inverse.toString(), j));
                     }

@@ -29,14 +29,15 @@ public class MatrixLine implements Comparable<MatrixLine> {
         return numberList.get(column - 1);
     }
 
-    public void pivotize() {
+    public FieldNumber pivotize() {
         for (int i = 1; i <= this.numberList.size(); i++) {
             if (!get(i).isZero()) {
                 FieldNumber inverse = get(i).getMultiplicalInverse();
                 numberList = numberList.stream().map(n -> n.multiply(inverse)).collect(Collectors.toList());
-                return;
+                return inverse;
             }
         }
+        return new FieldNumber(1);
     }
 
     public MatrixLine multiply(FieldNumber number) {
