@@ -36,7 +36,7 @@ public class FieldNumber implements Comparable<FieldNumber>{
                 return new FieldNumber(i, mod);
             }
         }
-        return null;
+        return new FieldNumber(0);
     }
 
     public FieldNumber getMultiplicalInverse(){

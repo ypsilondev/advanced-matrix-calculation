@@ -60,7 +60,7 @@ public class Main {
 
         while (!Terminal.readLine().equals("solve"));
         
-        Terminal.printLine(matrix.solve());
+        Terminal.printLine(matrix.solve2());
     }
 
     private static int[] parseNumbers(String[] numbers) {
