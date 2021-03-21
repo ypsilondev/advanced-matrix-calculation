@@ -1,5 +1,7 @@
 package tech.ypsilon.matrix;
 
+import java.util.Objects;
+
 public class FieldNumber implements Comparable<FieldNumber>{
     
     private int value;
@@ -52,6 +54,10 @@ public class FieldNumber implements Comparable<FieldNumber>{
         return value % mod == 0;
     }
 
+    public boolean isOne(){
+        return value % mod == 1;
+    }
+
     public String toString(){
         return Integer.toString(value);
     }
@@ -59,5 +65,18 @@ public class FieldNumber implements Comparable<FieldNumber>{
     @Override
     public int compareTo(FieldNumber o) {
         return o.value - this.value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FieldNumber that = (FieldNumber) o;
+        return value == that.value && mod == that.mod;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, mod);
     }
 }

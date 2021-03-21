@@ -15,13 +15,32 @@ public class Matrix {
 
     public String solve2() {
         for (int i = 1; i <= this.lines.size(); i++) {
+
             this.sort();
-            lines.get(i - 1).pivotize();
-            log(String.format("Pivotizing line %d", i));
+
+            // Add, if line i is already the inverse of line j
             for (int j = 1; j <= this.lines.size(); j++) {
                 if (j != i) {
                     FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
-                    if(!inverse.isZero()){
+                    if (inverse.equals(lines.get(i - 1).firstNonZeroNumber())) {
+                        if (!inverse.isZero()) {
+                            lines.set(j - 1, lines.get(i - 1).multiply(inverse).add(lines.get(j - 1)));
+                            log(String.format("Adding line %d onto line %d", i, j));
+                        }
+                    }
+                }
+            }
+
+            if (!lines.get(i - 1).firstNonZeroNumber().isOne()) {
+                lines.get(i - 1).pivotize();
+                log(String.format("Pivotizing line %d", i));
+            }
+
+            // add the pivotized one.
+            for (int j = 1; j <= this.lines.size(); j++) {
+                if (j != i) {
+                    FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
+                    if (!inverse.isZero()) {
                         lines.set(j - 1, lines.get(i - 1).multiply(inverse).add(lines.get(j - 1)));
                         log(String.format("Adding line %d times %s onto line %d", i, inverse.toString(), j));
                     }

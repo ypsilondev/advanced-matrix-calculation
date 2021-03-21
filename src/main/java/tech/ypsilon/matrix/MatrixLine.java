@@ -61,6 +61,10 @@ public class MatrixLine implements Comparable<MatrixLine> {
         return numberList.size();
     }
 
+    public FieldNumber firstNonZeroNumber(){
+        return this.get(firstNonZeroIndex());
+    }
+
     public boolean isFinalized() {
         int entryCounter = 0;
         for (FieldNumber fieldNumber : numberList) {
@@ -96,7 +100,7 @@ public class MatrixLine implements Comparable<MatrixLine> {
                 }
             }
 
-            return isThisFirst ? 1 : -1;
+            return isThisFirst ? -1 : 1;
         } else {
             return firstNonZeroIndex() - o.firstNonZeroIndex();
         }
