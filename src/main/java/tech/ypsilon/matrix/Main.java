@@ -23,14 +23,12 @@ public class Main {
     private static void interact() {
         Terminal.printLine(Message.INPUT_MATRIX);
 
-
-        Matrix matrix = new Matrix();
+        Matrix equationMatrix = new Matrix();
+        Matrix solutionMatrix = new Matrix();
         int columns = 0;
 
         String matrixLine;
-        while(!(matrixLine = Terminal.readLine().strip()).isBlank()) {
-            Pattern matrixLinePattern = Pattern.compile(Message.MATRIX_LINE_REGEX);
-            Matcher matrixLineMatcher = matrixLinePattern.matcher(matrixLine);
+        while (!(matrixLine = Terminal.readLine().strip()).isBlank()) { // basically does stuff
 
             if (matrixLine.matches(Message.FULL_ROW_REGEX) || matrixLine.matches(Message.MATRIX_LINE_REGEX)) {
                 // int[] numbers = parseNumbers(matrixLine.split(" "));
