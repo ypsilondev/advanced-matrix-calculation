@@ -39,6 +39,8 @@ public final class Terminal {
 
     private static final Queue<String> IO_DATA = new LinkedList<>();
 
+    private static String lastOutput = "";
+
 
     /**
      * Reads text from the "standard" input stream, buffering characters so as to
@@ -98,6 +100,7 @@ public final class Terminal {
     public static void printLine(final Object object) {
         System.out.println(object);
         IO_DATA.add(object.toString());
+        lastOutput = object.toString();
     }
 
     /**
@@ -125,6 +128,7 @@ public final class Terminal {
         }
         IO_DATA.add(s.toString());
         System.out.println(charArray);
+        lastOutput = s.toString();
     }
 
     /**
@@ -214,6 +218,10 @@ public final class Terminal {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static String getLastOutput() {
+        return lastOutput;
     }
 
     /**

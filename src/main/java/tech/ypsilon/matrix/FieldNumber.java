@@ -12,6 +12,9 @@ public class FieldNumber implements Comparable<FieldNumber>{
     }
 
     public FieldNumber(int value, int mod){
+        while(value < 0){
+            value += mod;
+        }
         this.value = value % mod;
         this.mod = mod;
     }
@@ -79,4 +82,9 @@ public class FieldNumber implements Comparable<FieldNumber>{
     public int hashCode() {
         return Objects.hash(value, mod);
     }
+
+    public FieldNumber multiply(int i){
+        return new FieldNumber(this.value * i, this.mod);
+    }
+
 }

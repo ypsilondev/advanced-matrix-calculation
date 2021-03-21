@@ -2,9 +2,13 @@ package tech.ypsilon.matrix;
 
 import util.Terminal;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Matrix {
     private final List<MatrixLine> lines = new ArrayList<>();
@@ -23,7 +27,7 @@ public class Matrix {
                 if (j != i) {
                     FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
                     if (inverse.equals(lines.get(i - 1).firstNonZeroNumber())) {
-                        if (!inverse.isZero() && !lines.get(i-1).get(i).isZero()) {
+                        if (!inverse.isZero() && !lines.get(i - 1).get(i).isZero()) {
                             lines.set(j - 1, lines.get(i - 1).add(lines.get(j - 1)));
                             log(String.format("Adding line %d onto line %d", i, j));
                         }
@@ -42,7 +46,7 @@ public class Matrix {
             for (int j = 1; j <= this.lines.size(); j++) {
                 if (j != i) {
                     FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
-                    if (!inverse.isZero() && !lines.get(i-1).get(i).isZero()) {
+                    if (!inverse.isZero() && !lines.get(i - 1).get(i).isZero()) {
                         lines.set(j - 1, lines.get(i - 1).multiply(inverse).add(lines.get(j - 1)));
                         log(String.format("Adding line %d times %s onto line %d", i, inverse.toString(), j));
                     }
@@ -50,6 +54,67 @@ public class Matrix {
             }
         }
         return "";
+    }
+
+    public void getSolutions() {
+        Collection<Integer> freeVariablePositions = freeVariablePostions();
+
+        List<FieldNumber> offsetVectorValues = new ArrayList<>();
+        this.lines.stream().forEachOrdered(line -> offsetVectorValues.add(line.getLast()));
+        Terminal.printLine(formatVector("Offset vector", offsetVectorValues));
+
+        for (int i : freeVariablePositions) {
+            List<FieldNumber> vectorValues = new ArrayList<>();
+            String test = "";
+            for (int j = 0; j < this.lines.size(); j++) {
+                if (i != j + 1) {
+                    vectorValues.add(lines.get(j).get(i).multiply(-1));
+                } else {
+                    vectorValues.add(new FieldNumber(1));
+                }
+            }
+            Terminal.printLine(formatVector(String.format("Span vector [derived by x_%d]", i), vectorValues));
+        }
+
+
+
+
+    }
+
+    private String formatVector(String name, List<FieldNumber> values) {
+        String out = name + " = (";
+        out += String.join(", ", intListToStringArr(values));
+        out += ")^T";
+        return out;
+    }
+
+    private String[] intListToStringArr(List<FieldNumber> list) {
+        String[] tmp = new String[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            tmp[i] = list.get(i).toString();
+        }
+        return tmp;
+    }
+
+    private Collection<Integer> freeVariablePostions() {
+        Collection<Integer> pivotPositions = this.pivotPositions();
+
+        Collection<Integer> freeVariablePositions = new TreeSet<>();
+
+        for (int i = 1; i < this.lines.get(0).getSize(); i++) {
+            if (!pivotPositions.contains(i)) {
+                freeVariablePositions.add(i);
+            }
+        }
+        return freeVariablePositions;
+    }
+
+    private Collection<Integer> pivotPositions() {
+        Set<Integer> out = new TreeSet<>();
+        for (MatrixLine line : this.lines) {
+            out.add(line.firstNonZeroIndex());
+        }
+        return out;
     }
 
     private void log(String s) {

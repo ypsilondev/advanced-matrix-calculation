@@ -1,3 +1,5 @@
+import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import tech.ypsilon.matrix.Main;
 import util.Terminal;
@@ -25,7 +27,7 @@ public class MatrixTest {
 
     @Test
     public void twoDimensionalSolution(){
-        run("5", "1 2 3 0", "2 4 1 0", "4 3 2 0", "", "solve");
+        run("5", "1 2 3 1", "2 4 1 2", "4 3 2 4", "", "solve");
     }
 
     @Test
@@ -36,6 +38,11 @@ public class MatrixTest {
     @Test
     public void longMatrix(){
         run("5", "1 2 3 4 0", "2 1 2 3 2", "", "solve");
+    }
+
+    @Test
+    public void uebungsKlausurMatrix(){
+        run("5", "4 4 2 0 0", "4 3 3 3 0", "4 1 0 4 0", "0 4 1 3 0", "", "solve");
     }
 
     private void run(String... commands){

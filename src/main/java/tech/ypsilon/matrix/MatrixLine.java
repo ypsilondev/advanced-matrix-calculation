@@ -29,6 +29,10 @@ public class MatrixLine implements Comparable<MatrixLine> {
         return numberList.get(column - 1);
     }
 
+    public FieldNumber getLast() {
+        return numberList.get(numberList.size() - 1);
+    }
+
     public FieldNumber pivotize() {
         for (int i = 1; i <= this.numberList.size(); i++) {
             if (!get(i).isZero()) {
@@ -62,7 +66,7 @@ public class MatrixLine implements Comparable<MatrixLine> {
         return numberList.size();
     }
 
-    public FieldNumber firstNonZeroNumber(){
+    public FieldNumber firstNonZeroNumber() {
         return this.get(firstNonZeroIndex());
     }
 
