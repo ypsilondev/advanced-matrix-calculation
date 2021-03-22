@@ -62,7 +62,7 @@ public class Main {
         }
 
         EquationSystem eqs;
-        String input = "";
+        String input;
         while (!(input = Terminal.readLine()).equalsIgnoreCase("quit")) {
             switch (input) {
                 case "solve":
@@ -70,7 +70,6 @@ public class Main {
                     eqs.solve2();
                     eqs.getSolutions();
                     Terminal.printLine(String.format("Dimension of solution-room is %d %s", eqs.countSpanVectors(), objectNameFromDimension(eqs.countSpanVectors())));
-                    //Terminal.printLine(eqs.solve2());
                     break;
                 case "trace":
                     Terminal.printLine(equationMatrix.getTrace());
@@ -87,7 +86,6 @@ public class Main {
                 case "rank":
                     eqs = new EquationSystem(equationMatrix, solutionMatrix);
                     eqs.solve2();
-                    // eqs.getSolutions();
                     Terminal.printLine(eqs.equationMatrix);
                     Terminal.printLine(String.format("Rank of matrix is %d", eqs.equationMatrix.countLinearIndependentLines()));
                     break;
@@ -105,7 +103,6 @@ public class Main {
                     if(!eqs.equationMatrix.isIdentityMatrix()){
                         Terminal.printLine("Matrix is not invertible!");
                     }
-                    // eqs.getSolutions();
                     break;
                 default:
                     break;
@@ -122,8 +119,7 @@ public class Main {
             case 2:
                 return "(Pane)";
             case 3:
-                return "(Box)";
-
+                return "(Space)";
         }
         return "";
 

@@ -14,6 +14,11 @@ public class MatrixTest {
     }
 
     @Test
+    public void testMatrix(){
+        run("5", "3 4 4 2 | 4", "1 1 2 0 | 1", "1 2 0 3 | 0", "", "kernel");
+    }
+
+    @Test
     public void zeroDimensionalSolution(){
         run("5", "2 4 3 | 1" , "1 2 0 | 1", "3 3 1 | 2", "", "solve");
     }

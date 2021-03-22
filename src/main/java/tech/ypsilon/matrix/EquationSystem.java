@@ -46,12 +46,12 @@ public class EquationSystem {
             // Add, if line i is already the inverse of line j
             for (int j = 1; j <= lines.size(); j++) {
                 if (j != i) {
-                    FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
+                    int pos = lines.get(i - 1).getPivotPosition() == -1 ? i : lines.get(i - 1).getPivotPosition();
+                    FieldNumber inverse = lines.get(j - 1).get(pos).getAdditionInverse();
                     if (inverse.equals(lines.get(i - 1).firstNonZeroNumber())) {
-                        if (!inverse.isZero() && !lines.get(i - 1).get(i).isZero()) {
+                        if (!inverse.isZero() && !lines.get(i - 1).get(pos).isZero()) {
                             lines.set(j - 1, lines.get(j - 1).add(lines.get(i - 1)));
                             this.getCorrespondingSolutionLine(lines.get(j - 1)).add(this.getCorrespondingSolutionLine(lines.get(i - 1)));
-                            //this.solutionMatrix.getLines().set(j - 1, this.solutionMatrix.getLines().get(j - 1).add(this.solutionMatrix.getLines().get(i - 1)));
                             this.log(String.format("Adding line %d onto line %d", i, j));
                         }
                     }
@@ -69,11 +69,11 @@ public class EquationSystem {
             // add the pivotized one.
             for (int j = 1; j <= lines.size(); j++) {
                 if (j != i) {
-                    FieldNumber inverse = lines.get(j - 1).get(i).getAdditionInverse();
-                    if (!inverse.isZero() && !lines.get(i - 1).get(i).isZero()) {
+                    int pos = lines.get(i - 1).getPivotPosition() == -1 ? i : lines.get(i - 1).getPivotPosition();
+                    FieldNumber inverse = lines.get(j - 1).get(pos).getAdditionInverse();
+                    if (!inverse.isZero() && !lines.get(i - 1).get(pos).isZero()) {
                         lines.set(j - 1, lines.get(j - 1).add(lines.get(i - 1).multiply(inverse)));
                         this.getCorrespondingSolutionLine(lines.get(j - 1)).add(this.getCorrespondingSolutionLine(lines.get(i - 1)).multiply(inverse));
-                        // this.solutionMatrix.getLines().set(j - 1, this.solutionMatrix.getLines().get(j - 1).add(this.solutionMatrix.getLines().get(i - 1).multiply(inverse)));
                         this.log(String.format("Adding line %d times %s onto line %d", i, inverse.toString(), j));
                     }
                 }
@@ -110,14 +110,24 @@ public class EquationSystem {
         Collection<Integer> freeVariablePositions = freeVariablePostions();
 
         List<FieldNumber> offsetVectorValues = new ArrayList<>();
-        this.equationMatrix.getLines().stream().forEachOrdered(line -> offsetVectorValues.add(this.getCorrespondingSolutionLine(line).getFirst()));
+        for (int i = 0; i < this.equationMatrix.getLines().get(0).getSize(); i++) {
+            if (i < this.equationMatrix.getLines().size()) {
+                offsetVectorValues.add(this.getCorrespondingSolutionLine(this.equationMatrix.getLines().get(i)).getFirst());
+            } else {
+                offsetVectorValues.add(new FieldNumber(0));
+            }
+        }
         Terminal.printLine(formatVector("Offset vector", offsetVectorValues));
         for (int i : freeVariablePositions) {
             List<FieldNumber> vectorValues = new ArrayList<>();
             String test = "";
-            for (int j = 0; j < this.equationMatrix.getLines().size(); j++) {
+            for (int j = 0; j < this.equationMatrix.getLines().get(0).getSize(); j++) {
                 if (i != j + 1) {
-                    vectorValues.add(equationMatrix.getLines().get(j).get(i).multiply(-1));
+                    if (j < this.equationMatrix.getLines().size()) {
+                        vectorValues.add(equationMatrix.getLines().get(j).get(i).multiply(-1));
+                    } else {
+                        vectorValues.add(new FieldNumber(0));
+                    }
                 } else {
                     vectorValues.add(new FieldNumber(1));
                 }
@@ -137,7 +147,7 @@ public class EquationSystem {
     private static String[] numberListToStringArr(List<FieldNumber> list) {
         String[] tmp = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
-            if(list.get(i) != null){
+            if (list.get(i) != null) {
                 tmp[i] = list.get(i).toString();
             }
         }
@@ -161,7 +171,7 @@ public class EquationSystem {
         Set<Integer> out = new TreeSet<>();
         for (MatrixLine line : this.equationMatrix.getLines()) {
             int index = line.getPivotPosition();
-            if(index >= 0){
+            if (index >= 0) {
                 out.add(index);
             }
         }
