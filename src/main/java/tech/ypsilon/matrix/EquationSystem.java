@@ -22,17 +22,17 @@ public class EquationSystem {
 
     public EquationSystem(Matrix equationMatrix, Matrix solutionMatrix) {
         this.rowMap = new HashMap<>();
-        this.equationMatrix = equationMatrix;
-        this.solutionMatrix = solutionMatrix;
+        this.equationMatrix = equationMatrix.copy();
+        this.solutionMatrix = solutionMatrix.copy();
 
-        if (equationMatrix.getLines().size() != solutionMatrix.getLines().size()) {
+        if (this.equationMatrix.getLines().size() != this.solutionMatrix.getLines().size()) {
             throw new IllegalArgumentException(ERROR_UNEQUAL_MATRICES);
-        } else if (equationMatrix.getLines().size() == 0) {
+        } else if (this.equationMatrix.getLines().size() == 0) {
             throw new IllegalArgumentException();
         }
 
-        for (int i = 0; i < equationMatrix.getLines().size(); i++) {
-            rowMap.put(equationMatrix.getLines().get(i), solutionMatrix.getLines().get(i));
+        for (int i = 0; i < this.equationMatrix.getLines().size(); i++) {
+            rowMap.put(this.equationMatrix.getLines().get(i), this.solutionMatrix.getLines().get(i));
         }
     }
 

@@ -157,4 +157,11 @@ public class MatrixLine implements Comparable<MatrixLine> {
     }
 
 
+    public MatrixLine copy() {
+        FieldNumber[] numbers = new FieldNumber[this.numberList.size()];
+        for(int i = 0; i<this.numberList.size(); i++){
+            numbers[i] = numberList.get(i).copy();
+        }
+        return new MatrixLine(numbers);
+    }
 }

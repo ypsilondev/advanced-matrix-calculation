@@ -72,6 +72,7 @@ public class MatrixTest {
 
     private void run(String... commands){
         Terminal.loadCommandList(commands);
+        Terminal.loadCommandList("quit");
         Main.main(new String[0]);
     }
 

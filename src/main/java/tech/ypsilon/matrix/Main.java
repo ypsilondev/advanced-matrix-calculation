@@ -62,45 +62,48 @@ public class Main {
         }
 
         EquationSystem eqs;
-        switch (Terminal.readLine()) {
-            case "solve":
-                eqs = new EquationSystem(equationMatrix, solutionMatrix);
-                eqs.solve2();
-                eqs.getSolutions();
-                //Terminal.printLine(eqs.solve2());
-                break;
-            case "trace":
-                Terminal.printLine(equationMatrix.getTrace());
-                break;
-            case "image":
-                eqs = new EquationSystem(equationMatrix.transposeMatrix(), solutionMatrix);
-                eqs.solve2();
-                Terminal.printLine(eqs.equationMatrix.transposeMatrix().toString());
-                break;
-            case "transpose":
-                Terminal.printLine(equationMatrix.transposeMatrix());
-                break;
-            case "rank":
-                eqs = new EquationSystem(equationMatrix, solutionMatrix);
-                eqs.solve2();
-                // eqs.getSolutions();
-                Terminal.printLine(eqs.equationMatrix);
-                Terminal.printLine(String.format("Rank of matrix is %d", eqs.equationMatrix.countLinearIndependentLines()));
-                break;
-            case "kernel":
-                eqs = new EquationSystem(equationMatrix, Matrix.zeroMatrix(equationMatrix.getLines().size(), 1));
-                eqs.solve2();
-                Terminal.printLine(eqs.equationMatrix);
-                eqs.getSolutions();
-                break;
-            case "invert":
-                eqs = new EquationSystem(equationMatrix, Matrix.identityMatrix(equationMatrix.getLines().size()));
-                eqs.solve2();
-                Terminal.printLine(eqs.toString());
-                // eqs.getSolutions();
-                break;
-            default:
-                break;
+        String input = "";
+        while (!(input = Terminal.readLine()).equalsIgnoreCase("quit")) {
+            switch (input) {
+                case "solve":
+                    eqs = new EquationSystem(equationMatrix, solutionMatrix);
+                    eqs.solve2();
+                    eqs.getSolutions();
+                    //Terminal.printLine(eqs.solve2());
+                    break;
+                case "trace":
+                    Terminal.printLine(equationMatrix.getTrace());
+                    break;
+                case "image":
+                    eqs = new EquationSystem(equationMatrix.copy().transposeMatrix(), solutionMatrix);
+                    eqs.solve2();
+                    Terminal.printLine(eqs.equationMatrix.transposeMatrix().toString());
+                    break;
+                case "transpose":
+                    Terminal.printLine(equationMatrix.copy().transposeMatrix());
+                    break;
+                case "rank":
+                    eqs = new EquationSystem(equationMatrix, solutionMatrix);
+                    eqs.solve2();
+                    // eqs.getSolutions();
+                    Terminal.printLine(eqs.equationMatrix);
+                    Terminal.printLine(String.format("Rank of matrix is %d", eqs.equationMatrix.countLinearIndependentLines()));
+                    break;
+                case "kernel":
+                    eqs = new EquationSystem(equationMatrix, Matrix.zeroMatrix(equationMatrix.getLines().size(), 1));
+                    eqs.solve2();
+                    Terminal.printLine(eqs.equationMatrix);
+                    eqs.getSolutions();
+                    break;
+                case "invert":
+                    eqs = new EquationSystem(equationMatrix, Matrix.identityMatrix(equationMatrix.getLines().size()));
+                    eqs.solve2();
+                    Terminal.printLine(eqs.toString());
+                    // eqs.getSolutions();
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

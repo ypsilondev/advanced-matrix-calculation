@@ -203,4 +203,10 @@ public class Matrix {
     public long countLinearIndependentLines() {
         return this.lines.stream().filter(line -> !line.isZeroLine()).count();
     }
+
+    public Matrix copy() {
+        List<MatrixLine> newLines = new ArrayList<>();
+        this.lines.stream().forEachOrdered(line -> newLines.add(line.copy()));
+        return new Matrix(newLines);
+    }
 }

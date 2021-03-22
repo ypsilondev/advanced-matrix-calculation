@@ -87,4 +87,7 @@ public class FieldNumber implements Comparable<FieldNumber> {
         return new FieldNumber(this.value * i, this.mod);
     }
 
+    public FieldNumber copy() {
+        return new FieldNumber(this.value, this.mod);
+    }
 }
