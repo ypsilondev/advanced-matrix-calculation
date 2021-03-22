@@ -1,7 +1,7 @@
 package tech.ypsilon.matrix;
 
-import util.Terminal;
 import util.Message;
+import util.Terminal;
 
 public class Main {
 
@@ -69,6 +69,7 @@ public class Main {
                     eqs = new EquationSystem(equationMatrix, solutionMatrix);
                     eqs.solve2();
                     eqs.getSolutions();
+                    Terminal.printLine(String.format("Dimension of solution-room is %d %s", eqs.countSpanVectors(), objectNameFromDimension(eqs.countSpanVectors())));
                     //Terminal.printLine(eqs.solve2());
                     break;
                 case "trace":
@@ -78,6 +79,7 @@ public class Main {
                     eqs = new EquationSystem(equationMatrix.copy().transposeMatrix(), solutionMatrix);
                     eqs.solve2();
                     Terminal.printLine(eqs.equationMatrix.transposeMatrix().toString());
+                    eqs.equationMatrix.transposeMatrix().printColumnVectors();
                     break;
                 case "transpose":
                     Terminal.printLine(equationMatrix.copy().transposeMatrix());
@@ -94,17 +96,37 @@ public class Main {
                     eqs.solve2();
                     Terminal.printLine(eqs.equationMatrix);
                     eqs.getSolutions();
+                    Terminal.printLine(String.format("Dimension of kernel is %d", eqs.countSpanVectors()));
                     break;
                 case "invert":
                     eqs = new EquationSystem(equationMatrix, Matrix.identityMatrix(equationMatrix.getLines().size()));
                     eqs.solve2();
                     Terminal.printLine(eqs.toString());
+                    if(!eqs.equationMatrix.isIdentityMatrix()){
+                        Terminal.printLine("Matrix is not invertible!");
+                    }
                     // eqs.getSolutions();
                     break;
                 default:
                     break;
             }
         }
+    }
+
+    private static String objectNameFromDimension(int countSpanVectors) {
+        switch (countSpanVectors){
+            case 0:
+                return "(Point)";
+            case 1:
+                return "(Line)";
+            case 2:
+                return "(Pane)";
+            case 3:
+                return "(Box)";
+
+        }
+        return "";
+
     }
 
     private static int[] parseNumbers(String[] numbers) {

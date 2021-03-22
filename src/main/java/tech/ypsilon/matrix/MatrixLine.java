@@ -1,6 +1,6 @@
 package tech.ypsilon.matrix;
 
-import util.Terminal;
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,9 +18,11 @@ public class MatrixLine implements Comparable<MatrixLine> {
     }
 
     public MatrixLine(FieldNumber[] numbers) {
-        for (FieldNumber number : numbers) {
-            numberList.add(number);
-        }
+        this(Arrays.asList(numbers));
+    }
+
+    public MatrixLine(List<FieldNumber> numbers){
+        numbers.stream().forEachOrdered(nbr -> this.numberList.add(nbr));
     }
 
     public MatrixLine() {
@@ -93,16 +95,6 @@ public class MatrixLine implements Comparable<MatrixLine> {
         return this.get(firstNonZeroIndex());
     }
 
-    public boolean isFinalized() {
-        int entryCounter = 0;
-        for (FieldNumber fieldNumber : numberList) {
-            if (!fieldNumber.isZero() && numberList.indexOf(fieldNumber) != numberList.size() - 1) {
-                entryCounter++;
-            }
-        }
-        return entryCounter <= 1;
-    }
-
     public String toString() {
         StringBuilder builder = new StringBuilder();
         for (FieldNumber fieldNumber : numberList) {
@@ -111,9 +103,6 @@ public class MatrixLine implements Comparable<MatrixLine> {
             }
             builder.append(fieldNumber.toString());
         }
-        /*if(matrix.withSolutions){
-            return new StringBuilder(builder.reverse().toString().replaceFirst(" ", " | ")).reverse().toString();
-        }*/
         return builder.toString();
     }
 
@@ -138,10 +127,6 @@ public class MatrixLine implements Comparable<MatrixLine> {
         } else {
             return firstNonZeroIndex() - o.firstNonZeroIndex();
         }
-    }
-
-    public void set(int j, FieldNumber fieldNumber) {
-        this.numberList.set(j, fieldNumber);
     }
 
     public boolean isZeroLine(){

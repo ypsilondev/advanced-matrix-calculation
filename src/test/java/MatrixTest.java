@@ -19,7 +19,7 @@ public class MatrixTest {
     }
 
     @Test
-    public void zeroDimensionalSolution2(){
+    public void twoDimensionalImage(){
         run("5", "1 2 3" , "1 2 0", "1 2 1", "", "image");
     }
 
@@ -63,6 +63,11 @@ public class MatrixTest {
     @Test
     public void longMatrix(){
         run("5", "1 2 3 4 | 0", "2 1 2 3 | 2", "", "solve");
+    }
+
+    @Test
+    public void traceTest(){
+        run("5", "1 2 3", "2 2 1", "1 1 0", "", "trace");
     }
 
     @Test

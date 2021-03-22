@@ -16,7 +16,7 @@ import static util.Message.ERROR_UNEQUAL_MATRICES;
 public class EquationSystem {
 
     private final Map<MatrixLine, MatrixLine> rowMap;
-
+    int spanVectorCount = 0;
     Matrix equationMatrix;
     Matrix solutionMatrix;
 
@@ -123,17 +123,18 @@ public class EquationSystem {
                 }
             }
             Terminal.printLine(formatVector(String.format("Span vector [derived by x_%d]", i), vectorValues));
+            spanVectorCount++;
         }
     }
 
-    private String formatVector(String name, List<FieldNumber> values) {
+    public static String formatVector(String name, List<FieldNumber> values) {
         String out = name + " = (";
         out += String.join(", ", numberListToStringArr(values));
         out += ")^T";
         return out;
     }
 
-    private String[] numberListToStringArr(List<FieldNumber> list) {
+    private static String[] numberListToStringArr(List<FieldNumber> list) {
         String[] tmp = new String[list.size()];
         for (int i = 0; i < list.size(); i++) {
             if(list.get(i) != null){
@@ -167,4 +168,7 @@ public class EquationSystem {
         return out;
     }
 
+    public int countSpanVectors() {
+        return spanVectorCount;
+    }
 }
