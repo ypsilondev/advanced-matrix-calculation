@@ -107,6 +107,14 @@ public class EquationSystem {
     }
 
     public void getSolutions() {
+        for (MatrixLine line : this.equationMatrix.getLines()) {
+            if (line.isZeroLine() && !this.getCorrespondingSolutionLine(line).isZeroLine()) {
+                Terminal.printLine("No solutions exist!");
+                this.spanVectorCount = -1;
+                return;
+            }
+        }
+
         Collection<Integer> freeVariablePositions = freeVariablePostions();
 
         List<FieldNumber> offsetVectorValues = new ArrayList<>();

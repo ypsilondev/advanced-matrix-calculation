@@ -3,6 +3,8 @@ package tech.ypsilon.matrix;
 import util.Message;
 import util.Terminal;
 
+import java.util.HashMap;
+
 public class Main {
 
     public static int MOD;
@@ -120,6 +122,8 @@ public class Main {
                 return "(Pane)";
             case 3:
                 return "(Space)";
+            case -1:
+                return "(no solution)";
         }
         return "";
 
